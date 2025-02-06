@@ -24,7 +24,7 @@ fun Route.userRoutes() {
             // add new user to the dataBase
             val isSuccess = addUser(newUser.name, newUser.email, newUser.password!!)
             if (isSuccess.not()) return@post call.respond(HttpStatusCode.InternalServerError, "Failed to add user")
-            call.respond(HttpStatusCode.Created, "User created correctly")
+            call.respond(HttpStatusCode.Created, mapOf("message" to "User created correctly"))
         }
 
         post("/login") {
@@ -65,7 +65,7 @@ fun Route.userRoutes() {
                 }
 
                 val user = getUser(userEmail)
-                call.respond(HttpStatusCode.OK, user)
+                call.respond(HttpStatusCode.OK, mapOf("user" to user))
             }
             patch("/update/{email}") {
                 val userEmail = call.parameters["email"]
@@ -89,7 +89,7 @@ fun Route.userRoutes() {
                     HttpStatusCode.InternalServerError,
                     "Failed to edit user info"
                 )
-                call.respond(HttpStatusCode.OK, "User updated correctly")
+                call.respond(HttpStatusCode.OK, mapOf("message" to "User updated correctly"))
             }
 
             post("/logout") {
@@ -97,7 +97,7 @@ fun Route.userRoutes() {
 
                 if (token != null) {
                     blacklistedTokens.add(token)
-                    call.respond(HttpStatusCode.OK, "You have been logged out successfully.")
+                    call.respond(HttpStatusCode.OK, mapOf("message" to "You have been logged out successfully."))
                 } else {
                     call.respond(HttpStatusCode.BadRequest, "Missing or invalid token.")
                 }

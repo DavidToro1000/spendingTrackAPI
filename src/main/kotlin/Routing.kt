@@ -13,6 +13,8 @@ fun Application.configureRouting() {
     install(CORS) {
         anyHost()
         allowHeader(HttpHeaders.ContentType)
+        allowHeader(HttpHeaders.Authorization)
+        allowCredentials = true
     }
     routing {
         get("/") {
